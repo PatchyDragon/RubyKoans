@@ -17,6 +17,16 @@ def triangle(a, b, c)
   # WRITE THIS CODE
   result = :scalene #if this isn't changed, we know it's right
 
+  #Sanity
+  if (a <= 0 || b <= 0 || c <= 0)
+  	raise TriangleError
+  	return
+  end
+  if (a+b <= c || a+c <= b || b+c <= a)
+  	raise TriangleError
+  	return
+  end
+
   if (a == b && b == c)
   	result = :equilateral
   else 
