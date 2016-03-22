@@ -15,8 +15,40 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 class Proxy
   def initialize(target_object)
     @object = target_object
+    @messages = []
+    @calls = Hash.new {|hash, key| hash[key] = 0}
     # ADD MORE CODE HERE
+    #but why?
   end
+
+  def method_missing(method_name, *args, &block)
+    symbol = method_name.to_sym
+    num = @calls[symbol]
+    newnum = num + 1
+    @calls[symbol] = newnum
+    @messages << method_name
+    @object.send(method_name, *args)
+  end
+
+  def messages
+    @messages
+  end
+
+  def called?(looking)
+    if @calls.keys.include?(looking)
+      true
+    end
+  end
+
+  def number_of_times_called(method)
+    symbol = method.to_sym
+    if @calls.keys.include?(symbol)
+      @calls[symbol]
+    else
+      0
+    end
+  end
+
 
   # WRITE CODE HERE
 end
